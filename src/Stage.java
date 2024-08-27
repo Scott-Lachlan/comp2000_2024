@@ -4,13 +4,14 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 public class Stage {
   Grid grid;
   List<Actor> actors;
   List<Cell> cellOverlay;
   Optional<Actor> actorInAction;
+  MoveStrategy leftStrategy = new LeftStrategy();
+  MoveStrategy randomStrategy = new RandomStrategy();
 
   enum State {ChoosingActor, SelectingNewLocation, BotMoving}
   State currentState;
@@ -29,8 +30,19 @@ public class Stage {
       for(Actor a: actors) {
         if(!a.isHuman()) {
           List<Cell> possibleLocs = getClearRadius(a.loc, a.moves);
-          int moveBotChooses = (new Random()).nextInt(possibleLocs.size());
-          a.setLocation(possibleLocs.get(moveBotChooses));
+          MoveStrategy strategy;
+          int coloumnIndex = (int) (a.loc.getX() / Cell.size);
+
+          if(coloumnIndex % 2 == 0){
+            strategy = randomStrategy;
+          } else{
+            strategy = leftStrategy;
+          }
+
+          Cell nextMove = strategy.move(possibleLocs);
+          if(nextMove != null){
+            a.setLocation(nextMove);
+          }
         }
       }
       currentState = State.ChoosingActor;
