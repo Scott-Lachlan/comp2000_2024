@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,7 +9,15 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
+<<<<<<< Updated upstream
 public class Grid {
+=======
+<<<<<<< Updated upstream
+public class Grid implements Iterable<Cell> {
+=======
+public class Grid implements Iterable<Cell>{
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
   Cell[][] cells = new Cell[20][20];
   
   public Grid() {
@@ -18,6 +27,10 @@ public class Grid {
       }
     }
   }
+
+    public Iterator<Cell> iterator() {
+        return new CellIterator(cells);
+    }
 
   private char colToLabel(int col) {
     return (char) (col + Character.valueOf('A'));
@@ -44,12 +57,27 @@ public class Grid {
   }
 
   public Optional<Cell> cellAtPoint(Point p) {
+<<<<<<< Updated upstream
     for(int i=0; i < cells.length; i++) {
       for(int j=0; j < cells[i].length; j++) {
         if(cells[i][j].contains(p)) {
           return Optional.of(cells[i][j]);
         }
+=======
+<<<<<<< Updated upstream
+    for(Cell c: this) {
+      if(c.contains(p)) {
+        return Optional.of(c);
+>>>>>>> Stashed changes
       }
+=======
+    Iterator<Cell> itr = iterator();
+    while (itr.hasNext()) {
+        Cell cell = itr.next();
+        if (cell.contains(p)) {
+            return Optional.of(cell);
+        }
+>>>>>>> Stashed changes
     }
     return Optional.empty();
   }
@@ -60,10 +88,22 @@ public class Grid {
    * @param func The `Cell` to `void` function to apply at each spot.
    */
   public void doToEachCell(Consumer<Cell> func) {
+<<<<<<< Updated upstream
     for(int i=0; i < cells.length; i++) {
       for(int j=0; j < cells[i].length; j++) {
         func.accept(cells[i][j]);
       }
+=======
+<<<<<<< Updated upstream
+    for(Cell c: this) {
+      func.accept(c);
+=======
+    Iterator<Cell> itr = iterator();
+    while (itr.hasNext()) {
+        Cell cell = itr.next();
+        func.accept(cell);
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
     }
   }
 
