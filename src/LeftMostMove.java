@@ -3,15 +3,11 @@ import java.util.List;
 public class LeftMostMove implements MoveStrategy {
   @Override
   public Cell chooseNextLoc(List<Cell> possibleLocs) {
-    Cell currLM = possibleLocs.get(0);
-    for(Cell c: possibleLocs) {
-      if(c.leftOfComparison(currLM) < 0) {
-        currLM = c;
-      }
-    }
-    return currLM;
+    Cell leftMostCell = possibleLocs.stream().min((cell1, cell2) -> cell1.leftOfComparison(cell2)).orElse(possibleLocs.get(0));
+    return leftMostCell;
   }
 
+  @Override
   public String toString() {
     return "left-most movement";
   }
